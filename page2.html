@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>四象生八卦 & Sidebar</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    body, html { margin:0; padding:0; height:100%; }
+    body {
+      display: flex;
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      background: #333;
+      color: #fff;
+      padding-top: 20px;
+      flex-shrink: 0;
+    }
+    .sidebar a {
+      display: block;
+      margin: 10px;
+      padding: 12px;
+      background: #444;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      text-align: center;
+      transition: background .2s;
+    }
+    .sidebar a:hover { background: #555; }
+
+    /* Content 区 */
+    .content {
+      margin-left: 800px;      /* 右移给 sidebar 留出空间 */
+      display: flex;           /* Flex 布局 */
+      justify-content: center; /* 水平居中 */
+      align-items: center;     /* 垂直居中 */
+      height: 100vh;    
+      padding-top: 300px;       /* 整个可视高度 */
+      position: relative;
+    }
+
+    /* SVG 充满 content 区 */
+    #chart {
+      width: 600px;  /* 或 100% */
+      height: 600px; /* 按需调整 */
+      overflow: visible;
+    }
+
+    /* 太极 & 八卦 的动画、样式（不变） */
+    svg g {
+      animation: spin 20s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center center;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .label {
+      font: 18px sans-serif;
+      text-anchor: middle;
+      cursor: pointer;
+      user-select: none;
+    }
+    .label:hover { fill: red; }
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <a href="page1.html">无极生太极</a>
+    <a href="page2.html">太极生两仪</a>
+    <a href="page3.html">两仪生四象</a>
+    <a href="page4.html">四象生八卦</a>
+    <a href="page5.html">六十四卦象</a>
+    <a href="page6.html">六十四卦卦</a>
+  </div>
+
+  <div class="content">
+    <svg id="chart" width="600" height="600"></svg>
+  </div>
+
+  <script>
+    const bagua = [
+      { name: '乾', symbol: '☰' },
+      { name: '坤', symbol: '☷' },
+      { name: '震', symbol: '☳' },
+      { name: '巽', symbol: '☴' },
+      { name: '坎', symbol: '☵' },
+      { name: '离', symbol: '☲' },
+      { name: '艮', symbol: '☶' },
+      { name: '兑', symbol: '☱' }
+    ];
+
+    const svg = d3.select('#chart')
+      .append('g')
+        // center the g in the visible SVG
+        .attr('transform', `translate(${600/2},${600/2})`);
+
+    const radius = 200;
+
+    // outer circle
+    svg.append('circle')
+      .attr('r', radius)
+      .attr('fill', 'none')
+      .attr('stroke', '#333');
+
+    // yin/yang half-arcs
+    const arc = d3.arc().innerRadius(0).outerRadius(radius);
+    svg.append('path')
+      .attr('d', arc({ startAngle: Math.PI/2, endAngle: 3*Math.PI/2 }))
+      .attr('fill', '#000');
+    svg.append('path')
+      .attr('d', arc({ startAngle: 3*Math.PI/2, endAngle: Math.PI/2 + 2*Math.PI }))
+      .attr('fill', '#fff')
+      .attr('stroke', '#333');
+
+    // “supplement” circles
+    svg.append('circle')
+      .attr('r', radius/2)
+      .attr('cx',  radius/2)
+      .attr('fill', '#fff');
+    svg.append('circle')
+      .attr('r', radius/2)
+      .attr('cx', -radius/2)
+      .attr('fill', '#000');
+
+    // inner eyes
+    svg.append('circle')
+      .attr('r', radius/6)
+      .attr('cx', -radius/2)
+      .attr('fill', '#fff')
+      .attr('stroke', '#000');
+    svg.append('circle')
+      .attr('r', radius/6)
+      .attr('cx', radius/2)
+      .attr('fill', '#000');
+
+    // place 8 clickable trigrams around
+    const angleStep = 2 * Math.PI / bagua.length;
+    bagua.forEach((d,i) => {
+      const angle = i * angleStep - Math.PI/2;
+      const x = Math.cos(angle) * (radius + 20);
+      const y = Math.sin(angle) * (radius + 20);
+
+      svg.append('text')
+        .attr('class','label')
+        .attr('x', x)
+        .attr('y', y + (y>0?6:0))
+        .text(d.symbol)
+        .on('click', () => {
+          // jump to each trigram page
+          window.location.href = {
+            '乾':'qian.html', '坤':'kun.html',
+            '震':'zhen.html','巽':'xun.html',
+            '坎':'kan.html','离':'li.html',
+            '艮':'gen.html','兑':'dui.html'
+          }[d.name];
+        });
+    });
+  </script>
+</body>
+</html>

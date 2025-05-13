@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <title>螺线上的六十四卦超链接</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #fafafa;
+    }
+    svg { overflow: visible; }
+    path {
+      fill: none;
+      stroke-width: 2;
+    }
+    /* 链接文字样式 */
+    a text {
+      font: 12px sans-serif;
+      fill: #333;
+      user-select: none;
+      pointer-events: all;
+    }
+    a:hover text {
+      fill: red;
+    }
+  </style>
+</head>
+<body>
+  <svg id="canvas" width="800" height="600"></svg>
+  <script>
+    const svg = d3.select('#canvas'),
+          W   = +svg.attr('width'),
+          H   = +svg.attr('height');
+
+    let spiralCount = 0;
+
+    /**
+     * 画一条阿基米德螺线并沿线生成一组超链接文字
+     * @param {Object} cfg
+     *   cx, cy      中心坐标
+     *   b           螺距系数
+     *   maxTheta    画几圈
+     *   step        步进
+     *   color       线条颜色
+     *   smooth      是否曲线插值
+     *   labels      卦名数组
+     */
+    function drawSpiral({ cx, cy, b, maxTheta, step, color, smooth = true, labels = [] }) {
+      // 1. 生成螺线点阵
+      const points = d3.range(0, maxTheta + step, step).map(theta => {
+        const r = b * theta;
+        return [ cx + r * Math.cos(theta), cy + r * Math.sin(theta) ];
+      });
+
+      // 2. 创建唯一 id
+      const pathId = `spiralPath${++spiralCount}`;
+
+      // 3. 绘制 path
+      let lineGen = d3.line().x(d => d[0]).y(d => d[1]);
+      if (smooth) lineGen = lineGen.curve(d3.curveCardinal);
+
+      svg.append('path')
+        .datum(points)
+        .attr('id', pathId)
+        .attr('d', lineGen)
+        .attr('stroke', color);
+
+      // 4. 为每个 label 创建一个 <a><text><textPath>>
+      const n = labels.length;
+      labels.forEach((name, i) => {
+        // 计算文字在路径上的起始偏移
+        const offset = (i + 0.5) / n * 100;  // +0.5 保证文字居中在各自区段
+
+        svg.append('a')
+          .attr('xlink:href', `${name}.html`)   // 对应的页面
+          .attr('target', '_blank')
+          .append('text')
+            .append('textPath')
+              .attr('href', `#${pathId}`)
+              .attr('startOffset', `${offset}%`)
+              .text(name);
+      });
+    }
+
+    // 第一条螺线上的前 32 卦
+    drawSpiral({
+      cx: -60 * Math.PI + W/2,
+      cy: H/2,
+      b: 10,
+      maxTheta: 6 * Math.PI,
+      step: 0.01,
+      color: 'steelblue',
+      smooth: true,
+      labels: [
+        "乾","坤","屯","蒙","需","讼","师","比",
+        "小畜","履","泰","否","同人","大有","谦","豫",
+        "随","蛊","临","观","噬嗑","贲","剥","复",
+        "无妄","大畜","颐","大过","坎","离","咸","恒"
+      ]
+    });
+
+    // 第二条螺线上的后 32 卦
+    drawSpiral({
+      cx: 70 * Math.PI + W/2,
+      cy: H/2,
+      b: 10,
+      maxTheta: 7 * Math.PI,
+      step: 0.01,
+      color: 'tomato',
+      smooth: true,
+      labels: [
+        "遁","大壮","晋","明夷","家人","睽","蹇","解",
+        "损","益","夬","姤","萃","升","困","井",
+        "革","鼎","震","艮","渐","归妹","丰","旅",
+        "巽","兑","涣","节","中孚","小过","既济","未济"
+      ]
+    });
+  </script>
+</body>
+</html>

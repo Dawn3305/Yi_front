@@ -1,0 +1,14 @@
+{
+  "name": "7fccc1a22e2665b6",
+  "main": "7fccc1a22e2665b6@382.js",
+  "version": "382.0.0",
+  "homepage": "https://observablehq.com/d/7fccc1a22e2665b6",
+  "author": {
+    "name": "XJTLU",
+    "url": "https://observablehq.com/@xjtlu4"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

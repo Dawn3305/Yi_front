@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>八卦太极图（可点击）</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #fafafa;
+    }
+        /* 让整个 <g> 以 SVG 正中心自转，并且不裁剪溢出部分 */
+    svg {
+      overflow: visible;
+    }
+    .label {
+      font: 18px sans-serif;
+      text-anchor: middle;
+      cursor: pointer;
+      user-select: none;
+    }
+    .label:hover {
+      fill: red;
+    }
+        svg g {
+      animation: spin 20s linear infinite;
+      transform-box: fill-box;       /* 以自身包围盒为参考 */
+      transform-origin: center center;      /* 以自身中心为旋转点 */
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <svg id="chart" width="100" height="100"></svg>
+  <script>
+    // 八卦符号和名称
+    const bagua = [
+      { name: '乾', symbol: '☰' },
+      { name: '坤', symbol: '☷' },
+      { name: '震', symbol: '☳' },
+      { name: '巽', symbol: '☴' },
+      { name: '坎', symbol: '☵' },
+      { name: '离', symbol: '☲' },
+      { name: '艮', symbol: '☶' },
+      { name: '兑', symbol: '☱' }
+    ];
+
+    const width  = 600;
+    const height = 600;
+    const radius = 200;
+
+    // 创建 SVG 画布并居中
+    const svg = d3.select('#chart')
+      .append('g')
+        .attr('transform', `translate(${width/2},${height/2})`);
+
+    // 1. 绘制大圆（太极外围）
+    svg.append('circle')
+      .attr('r', radius)
+      .attr('fill', 'none')
+      .attr('stroke', '#333');
+
+    // 2. 绘制太极鱼形
+    const arc = d3.arc().innerRadius(0).outerRadius(radius);
+    // 阴鱼（左半黑色）
+    svg.append('path')
+      .attr('d', arc({ startAngle: Math.PI/2, endAngle: 3*Math.PI/2 }))
+      .attr('fill', '#000');
+    // 阳鱼（右半白色 + 描边）
+    svg.append('path')
+      .attr('d', arc({ startAngle: 3*Math.PI/2, endAngle: Math.PI/2 + 2*Math.PI }))
+      .attr('fill', '#fff')
+      .attr('stroke', '#333');
+    
+    //阳鱼补充
+    svg.append('circle')
+    .attr('r',radius/2)
+    .attr('cx',radius/2)
+      .attr('fill', '#fff')
+    //阴鱼补充
+    svg.append('circle')
+    .attr('r',radius/2)
+    .attr('cx',-radius/2)
+    .attr('fill', '#000')
+
+      // 3. 鱼眼小圆
+    svg.append('circle')
+      .attr('r', radius/6)
+      .attr('cx', -radius/2)
+      .attr('fill', '#fff')
+      .attr('stroke', '#000');  
+    svg.append('circle')
+      .attr('r', radius/6)
+      .attr('cx',  radius/2)
+      .attr('fill', '#333');
+
+    // 4. 在大圆外围放置 8 个可点击的八卦符号
+    const angleStep = 2 * Math.PI / bagua.length;
+    bagua.forEach((d, i) => {
+      // 计算每个符号的位置
+      const angle = i * angleStep - Math.PI/2;  // 从顶点开始顺时针
+      const x0 = Math.cos(angle) * (radius + 10);
+      const y0 = Math.sin(angle) * (radius + 10);
+
+      // 绘制符号
+      svg.append('text')
+        .attr('class', 'label')
+        .attr('x', x0)
+        .attr('y', y0 + (y0 > 0 ? 6 : 0))  // 下半圈微调垂直偏移
+        .text(d.symbol)
+        .on('click', () => { 
+          console.log(`你点击了八卦：${d.name}`); 
+        if (d.name === '乾') {
+        window.location.href = 'qian.html'; // 对应页面1
+      } else if (d.name === '坤') {
+        window.location.href = 'kun.html'; // 对应页面2
+      } else if (d.name === '震') {
+        window.location.href = 'zhen.html'; // 对应页面3
+      } else if (d.name === '巽') {
+        window.location.href = 'xun.html'; // 对应页面4
+      } else if (d.name === '坎') {
+        window.location.href = 'kan.html'; // 对应页面5
+      } else if (d.name === '离') {
+        window.location.href = 'li.html'; // 对应页面6
+      } else if (d.name === '艮'){
+        window.location.href = 'gen.html'; // 对应页面6
+      } else if (d.name === '兑'){
+        window.location.href = 'dui.html'; // 对应页面6
+      } 
+        });
+    });
+
+  </script>
+</body>
+</html>

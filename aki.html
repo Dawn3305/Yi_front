@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>螺线带文字标注</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #fafafa;
+    }
+    svg { overflow: visible; }
+    path {
+      fill: none;
+      stroke-width: 2;
+    }
+    text {
+      font: 14px sans-serif;
+      fill: #333;
+    }
+    /* 如果文字想沿路径更好看可以稍微调一下 letter-spacing */
+    textPath {
+      letter-spacing: 10px;
+    }
+  </style>
+</head>
+<body>
+  <svg id="canvas" width="600" height="400"></svg>
+  <script>
+    const svg = d3.select('#canvas'),
+          W   = +svg.attr('width'),
+          H   = +svg.attr('height');
+
+    let spiralCount = 0;  // 用来生成唯一 ID
+
+    /**
+     * 画一条阿基米德螺线并在上面标文字
+     */
+    function drawSpiral({ cx, cy, b, maxTheta, step, color, smooth = true, label, offsetPct = 0 }) {
+      // 生成点阵
+      const points = d3.range(0, maxTheta + step, step).map(theta => {
+        const r = b * theta;
+        return [cx + r * Math.cos(theta), cy + r * Math.sin(theta)];
+      });
+
+      // 生成管线 id
+      const pathId = `spiralPath${++spiralCount}`;
+
+      // 创建 line 生成器
+      let lineGen = d3.line().x(d => d[0]).y(d => d[1]);
+      if (smooth) lineGen = lineGen.curve(d3.curveCardinal);
+
+      // 绘制 path 并赋 id
+      svg.append('path')
+        .datum(points)
+        .attr('id', pathId)
+        .attr('d', lineGen)
+        .attr('stroke', color);
+
+      // 如果有 label，就在 path 上添加 textPath
+      if (label) {
+        svg.append('text')
+          .append('textPath')
+            .attr('href', `#${pathId}`)
+            // offsetPct% 指文字起始位置沿路径的百分比
+            .attr('startOffset', `${offsetPct}%`)
+            .text(label);
+      }
+    }
+
+    // 第一条螺线，带文字
+    drawSpiral({
+      cx: -60*Math.PI + W/2,
+      cy: H/2,
+      b: 10,
+      maxTheta: 6 * Math.PI,
+      step: 0.01,
+      color: 'steelblue',
+      smooth: true,
+      label: '乾 坤 屯 蒙 需 讼 师 比 小畜 履 泰 否 同人 大有 谦 豫 随 蛊 临 观 噬嗑 贲 剥 复 无妄 大畜 颐 大过 坎 离 咸 恒',
+      offsetPct: 10
+    });
+
+    // 第二条螺线，带文字
+    drawSpiral({
+      cx: 70    *Math.PI + W/2,
+      cy: H/2,
+      b: 10,
+      maxTheta: 7 * Math.PI,
+      step: 0.01,
+      color: 'tomato',
+      smooth: true,
+      label: '遁 大壮 晋 明夷 家人 睽 蹇 解 损 益 夬 姤 萃 升 困 井 革 鼎 震 艮 渐 归妹 丰 旅 巽 兑 涣 节 中孚 小过 既济 未济',
+      offsetPct: 20
+    });
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,238 @@
+{
+ "name": "bagua",
+ "children": [
+    {
+        "name": "乾",
+        "children": [
+            {"name": "乾", 
+            "children":[
+                {"name":"乾","value":1000}]},
+            {"name": "兑", 
+            "children":[
+                {"name":"夬","value":1000}]},
+            {"name": "离", 
+            "children":[
+                {"name":"大有","value":1000}]},
+            {"name": "震", 
+            "children":[
+                {"name":"大壮","value":1000}]},
+            {"name": "巽", 
+            "children":[
+                {"name":"小畜","value":1000}]},
+            {"name": "坎", 
+            "children":[
+                {"name":"需","value":1000}]},
+            {"name": "艮", 
+            "children":[
+                {"name":"大畜","value":1000}]},
+            {"name": "坤", 
+            "children":[
+                {"name":"泰","value":1000}]}
+        ]
+    },
+    {
+        "name": "兑",
+        "children": [
+            {"name": "乾", 
+            "children":[
+                {"name":"履","value":1000}]},
+            {"name": "兑", 
+            "children":[
+                {"name":"兑","value":1000}]},
+            {"name": "离", 
+            "children":[
+                {"name":"睽","value":1000}]},
+            {"name": "震", 
+            "children":[
+                {"name":"归姝","value":1000}]},
+            {"name": "巽", 
+            "children":[
+                {"name":"中孚","value":1000}]},
+            {"name": "坎", 
+            "children":[
+                {"name":"节","value":1000}]},
+            {"name": "艮", 
+            "children":[
+                {"name":"损","value":1000}]},
+            {"name": "坤", 
+            "children":[
+                {"name":"临","value":1000}]}
+        ]
+    },
+    {
+        "name": "离",
+        "children": [
+            {"name": "乾", 
+            "children":[
+                {"name":"同人","value":1000}]},
+            {"name": "兑", 
+            "children":[
+                {"name":"革","value":1000}]},
+            {"name": "离", 
+            "children":[
+                {"name":"离","value":1000}]},
+            {"name": "震", 
+            "children":[
+                {"name":"丰","value":1000}]},
+            {"name": "巽", 
+            "children":[
+                {"name":"家人","value":1000}]},
+            {"name": "坎", 
+            "children":[
+                {"name":"既济","value":1000}]},
+            {"name": "艮", 
+            "children":[
+                {"name":"贲","value":1000}]},
+            {"name": "坤", 
+            "children":[
+                {"name":"明夷","value":1000}]}
+        ]
+    },
+    {
+        "name": "震",
+        "children": [
+            {"name": "乾", 
+            "children":[
+                {"name":"无妄","value":1000}]},
+            {"name": "兑", 
+            "children":[
+                {"name":"随","value":1000}]},
+            {"name": "离", 
+            "children":[
+                {"name":"噬嗑","value":1000}]},
+            {"name": "震", 
+            "children":[
+                {"name":"震","value":1000}]},
+            {"name": "巽", 
+            "children":[
+                {"name":"益","value":1000}]},
+            {"name": "坎", 
+            "children":[
+                {"name":"屯","value":1000}]},
+            {"name": "艮", 
+            "children":[
+                {"name":"颐","value":1000}]},
+            {"name": "坤", 
+            "children":[
+                {"name":"复","value":1000}]}
+        ]
+    },
+    {
+        "name": "巽",
+        "children": [
+            {"name": "乾", 
+            "children":[
+                {"name":"姤","value":1000}]},
+            {"name": "兑", 
+            "children":[
+                {"name":"大过","value":1000}]},
+            {"name": "离", 
+            "children":[
+                {"name":"鼎","value":1000}]},
+            {"name": "震", 
+            "children":[
+                {"name":"恒","value":1000}]},
+            {"name": "巽", 
+            "children":[
+                {"name":"巽","value":1000}]},
+            {"name": "坎", 
+            "children":[
+                {"name":"井","value":1000}]},
+            {"name": "艮", 
+            "children":[
+                {"name":"蛊","value":1000}]},
+            {"name": "坤", 
+            "children":[
+                {"name":"升","value":1000}]}
+        ]
+    },
+    {
+        "name": "坎",
+        "children": [
+            {"name": "乾", 
+            "children":[
+                {"name":"讼","value":1000}]},
+            {"name": "兑", 
+            "children":[
+                {"name":"困","value":1000}]},
+            {"name": "离", 
+            "children":[
+                {"name":"未济","value":1000}]},
+            {"name": "震", 
+            "children":[
+                {"name":"解","value":1000}]},
+            {"name": "巽", 
+            "children":[
+                {"name":"涣","value":1000}]},
+            {"name": "坎", 
+            "children":[
+                {"name":"坎","value":1000}]},
+            {"name": "艮", 
+            "children":[
+                {"name":"蒙","value":1000}]},
+            {"name": "坤", 
+            "children":[
+                {"name":"师","value":1000}]}
+        ]
+    },
+    {
+        "name": "艮",
+        "children": [
+            {"name": "乾", 
+            "children":[
+                {"name":"遁","value":1000}]},
+            {"name": "兑", 
+            "children":[
+                {"name":"咸","value":1000}]},
+            {"name": "离", 
+            "children":[
+                {"name":"旅","value":1000}]},
+            {"name": "震", 
+            "children":[
+                {"name":"小过","value":1000}]},
+            {"name": "巽", 
+            "children":[
+                {"name":"渐","value":1000}]},
+            {"name": "坎", 
+            "children":[
+                {"name":"蹇","value":1000}]},
+            {"name": "艮", 
+            "children":[
+                {"name":"艮","value":1000}]},
+            {"name": "坤", 
+            "children":[
+                {"name":"谦","value":1000}]}
+        ]
+    },
+    {
+        "name": "坤",
+        "children": [
+            {"name": "乾", 
+            "children":[
+                {"name":"否","value":1000}]},
+            {"name": "兑", 
+            "children":[
+                {"name":"萃","value":1000}]},
+            {"name": "离", 
+            "children":[
+                {"name":"晋","value":1000}]},
+            {"name": "震", 
+            "children":[
+                {"name":"豫","value":1000}]},
+            {"name": "巽", 
+            "children":[
+                {"name":"观","value":1000}]},
+            {"name": "坎", 
+            "children":[
+                {"name":"比","value":1000}]},
+            {"name": "艮", 
+            "children":[
+                {"name":"剥","value":1000}]},
+            {"name": "坤", 
+            "children":[
+                {"name":"坤","value":1000}]}
+        ]
+    }
+  
+ ]
+}

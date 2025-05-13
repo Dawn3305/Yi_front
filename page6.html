@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>螺线上的六十四卦 & Sidebar</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    /* Sidebar 样式 */
+    .sidebar {
+      width: 200px;
+      background-color: #333;
+      color: white;
+      padding-top: 20px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 15px;
+      display: block;
+      text-align: center;
+      background-color: #444;
+      margin: 10px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+    .sidebar a:hover {
+      background-color: #555;
+    }
+
+    /* 主内容区 */
+    .content {
+      flex-grow: 1;
+      background-color: #fafafa;
+      position: relative;
+      overflow: hidden;
+    }
+    /* SVG 全屏铺满 content */
+    #canvas {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      overflow: visible;
+    }
+
+    path {
+      fill: none;
+      stroke-width: 2;
+    }
+    /* 链接文字样式 */
+    a text {
+      font: 12px sans-serif;
+      fill: #333;
+      user-select: none;
+      pointer-events: all;
+    }
+    a:hover text {
+      fill: red;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar 导航 -->
+  <div class="sidebar">
+    <a href="page1.html">无极生太极</a>
+    <a href="page2.html">太极生两仪</a>
+    <a href="page3.html">两仪生四象</a>
+    <a href="page4.html">四象生八卦</a>
+    <a href="page5.html">六十四卦象</a>
+    <a href="page6.html">六十四卦卦</a>
+  </div>
+
+  <!-- 主内容区 -->
+  <div class="content">
+    <svg id="canvas" width="800" height="600"></svg>
+  </div>
+
+  <script>
+    const svg = d3.select('#canvas'),
+          W   = +svg.attr('width'),
+          H   = +svg.attr('height');
+
+    let spiralCount = 0;
+
+    function drawSpiral({ cx, cy, b, maxTheta, step, color, smooth = true, labels = [] }) {
+      const points = d3.range(0, maxTheta + step, step).map(theta => {
+        const r = b * theta;
+        return [ cx + r * Math.cos(theta), cy + r * Math.sin(theta) ];
+      });
+
+      const pathId = `spiralPath${++spiralCount}`;
+      let lineGen = d3.line().x(d => d[0]).y(d => d[1]);
+      if (smooth) lineGen = lineGen.curve(d3.curveCardinal);
+
+      svg.append('path')
+        .datum(points)
+        .attr('id', pathId)
+        .attr('d', lineGen)
+        .attr('stroke', color);
+
+      const n = labels.length;
+      labels.forEach((name, i) => {
+        const offset = (i + 0.5) / n * 100;
+        svg.append('a')
+          .attr('xlink:href', `${name}.html`)
+          .attr('target', '_blank')
+          .append('text')
+            .append('textPath')
+              .attr('href', `#${pathId}`)
+              .attr('startOffset', `${offset}%`)
+              .text(name);
+      });
+    }
+
+    // 左侧 32 卦
+    drawSpiral({
+      cx: W/2 - 60 * Math.PI,
+      cy: H/2,
+      b: 10,
+      maxTheta: 6 * Math.PI,
+      step: 0.01,
+      color: 'steelblue',
+      smooth: true,
+      labels: [
+        "乾","坤","屯","蒙","需","讼","师","比",
+        "小畜","履","泰","否","同人","大有","谦","豫",
+        "随","蛊","临","观","噬嗑","贲","剥","复",
+        "无妄","大畜","颐","大过","坎","离","咸","恒"
+      ]
+    });
+
+    // 右侧 32 卦
+    drawSpiral({
+      cx: W/2 + 70 * Math.PI,
+      cy: H/2,
+      b: 10,
+      maxTheta: 7 * Math.PI,
+      step: 0.01,
+      color: 'tomato',
+      smooth: true,
+      labels: [
+        "遁","大壮","晋","明夷","家人","睽","蹇","解",
+        "损","益","夬","姤","萃","升","困","井",
+        "革","鼎","震","艮","渐","归妹","丰","旅",
+        "巽","兑","涣","节","中孚","小过","既济","未济"
+      ]
+    });
+  </script>
+</body>
+</html>
+

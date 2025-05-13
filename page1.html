@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+            text-align: center;
+            background-color: #444;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #555;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+            background-color: #e0d0d0;
+            height: 100vh;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 加一个粒子Canvas -->
+    <canvas id="particleCanvas"></canvas>
+    
+    <!-- Sidebar (Navigation) -->
+    <div class="sidebar">
+      <a href="page1.html">无极生成太极</a>
+      <a href="page2.html">太极生两仪</a>
+      <a href="page3.html">两仪生四象</a>
+      <a href="page4.html">四象生八卦</a>
+      <a href="page5.html">八卦生成六十四卦</a>
+      <a href="page6.html">六十四卦演变</a>
+    </div>
+    
+    <!-- Content Section -->
+    <div class="content">
+      <h2>无极生成太极</h2>
+      <p>This is the content of the home page. You can navigate to other pages using the sidebar.</p>
+    </div>
+    
+    <!-- 粒子运动JS -->
+    <script>
+    // 初始化 Canvas
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 自适应屏幕大小
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // 粒子数组
+    let particlesArray = [];
+    const numberOfParticles = 200;
+    
+    // 鼠标对象
+    const mouse = {
+        x: null,
+        y: null,
+        radius: 300
+    };
+    
+    // 监听鼠标
+    window.addEventListener('mousemove', function(event) {
+        mouse.x = event.x;
+        mouse.y = event.y;
+    });
+    
+    // 粒子类
+    class Particle {
+        constructor(x, y, size, color, weight) {
+            this.x = x;
+            this.y = y;
+            this.size = size;
+            this.color = color;
+            this.weight = weight;
+        }
+        draw(){
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+        update(){
+            // 粒子受到鼠标吸引
+            let dx = mouse.x - this.x;
+            let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+    
+            if (distance < mouse.radius) {
+                this.x += dx * 0.02; // 聚拢速度
+                this.y += dy * 0.02;
+            } else {
+                // 平时缓慢运动
+                this.x += (Math.random() - 0.5) * 1;
+                this.y += (Math.random() - 0.5) * 1;
+            }
+        }
+    }
+    
+    // 创建粒子
+    function init(){
+        particlesArray = [];
+        for (let i = 0; i < numberOfParticles; i++) {
+            let size = Math.random() * 3 + 1;
+            let x = Math.random() * canvas.width;
+            let y = Math.random() * canvas.height;
+            let color = 'rgba(0, 0, 0, 0.7)';
+            let weight = 1;
+            particlesArray.push(new Particle(x, y, size, color, weight));
+        }
+    }
+    
+    // 动画循环
+    function animate(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw();
+        }
+        requestAnimationFrame(animate);
+    }
+    
+    // 初始 & 动画启动
+    init();
+    animate();
+    
+    // 监听窗口变化自适应
+    window.addEventListener('resize', function(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+    });
+    
+    canvas.addEventListener('click', function(){
+    window.location.href = 'page2.html';
+    });
+    </script>
+    </body>
+    
+</html>
